@@ -1,0 +1,23 @@
+{
+  "compilerOptions": {
+    "allowSyntheticDefaultImports": true,
+    "baseUrl": "./src",
+    "declaration": true,
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
+    "forceConsistentCasingInFileNames": false,
+    "incremental": true,
+    "module": "commonjs",
+    "noImplicitAny": false,
+    "noFallthroughCasesInSwitch": false,
+    "outDir": "./dist",
+    "removeComments": true,
+    "sourceMap": true,
+    "skipLibCheck": true,
+    "strictBindCallApply": false,
+    "strictNullChecks": false,
+    "target": "es2017"
+  },
+  "include": ["src/**/*"],
+  "exclude": ["node_modules", "**/*.spec.ts", "migration"]
+}
