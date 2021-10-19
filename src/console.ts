@@ -8,6 +8,9 @@ import { AppService } from './app.service';
 import { StagesService } from './stages/stages.service';
 import { JobsService } from './jobs/jobs.service';
 import { jobFixtures } from './fixtures/job-fixtures';
+import { SkillsService } from './jobs/skills.service';
+import { SkillFixtures } from './fixtures/skill-fixtures';
+import { SkillFactory } from './jobs/entities/skill.factory';
 
 async function bootstrap() {
   const application = await NestFactory.createApplicationContext(
@@ -28,9 +31,17 @@ async function bootstrap() {
       break;
     case 'fixtures:jobs':
       const jobsService: JobsService = application.get(JobsService);
+      const skillsService: SkillsService = application.get(SkillsService);
 
       for (const jobObject of jobFixtures) {
         await jobsService.updateOrCreate(jobObject);
+
+        const skillsForJob = SkillFixtures.findAllByClass(jobObject.id);
+
+        for(const skillArray of skillsForJob){
+          await skillsService.updateOrCreate(SkillFactory.createFromFixtureArray(skillArray));
+        }
+
       }
 
       console.info('[Console]', `${jobFixtures.length} Jobs imported.`);

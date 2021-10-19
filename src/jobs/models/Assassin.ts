@@ -32,22 +32,3 @@ export const fanPoisonFatalShiv = [AssassinSkill.FanOfKnives, AssassinSkill.Pois
 export const fanFatalDoubleSwiftwind = [AssassinSkill.FanOfKnives, AssassinSkill.FatalKnife, AssassinSkill.DoubleThrowKnives, AssassinSkill.SwiftwindDaggers];
 
 
-export class AssassinSetup extends ClassSetup {
-  constructor(
-    public level: number,
-    public skill1: AssassinSkill,
-    public skill2: AssassinSkill,
-    public skill3: AssassinSkill,
-    public skill4: AssassinSkill,
-  ) {
-    super(ClassType.Assassin, level, skill1, skill2, skill3, skill4);
-  }
-
-  static getHighestDps(area): AssassinSkill[] {
-    return poisonLacShivPursue;
-  }
-
-  public static createFromArray(skills: AssassinSkill[]): AssassinSetup {
-    return new AssassinSetup(0, skills[0], skills[1], skills[2], skills[3]);
-  }
-}
