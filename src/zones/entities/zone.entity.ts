@@ -1,6 +1,7 @@
 import { Column, Entity, ManyToOne, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
 import { Continent } from '../../continents/entities/continent.entity';
 import { Stage } from '../../stages/entities/stage.entity';
+import { PartySetup } from '../../bosses/entities/party-setup.entity';
 
 @Entity()
 export class Zone {
@@ -21,4 +22,7 @@ export class Zone {
 
   @OneToMany(() => Stage, stage => stage.zone, { cascade: true,  })
   public stages: Stage[];
+
+  @OneToMany(() => PartySetup, partySetups => partySetups.zone)
+  public partySetups: PartySetup[];
 }

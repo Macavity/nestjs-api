@@ -27,7 +27,7 @@ export class BossesService extends TypeOrmCrudService<Boss> {
       result.secondaryElement = secondaryElement;
     }
 
-    await this.repository.save(result);
+    return await this.repository.save(result);
   }
 
   public async findOneOrFail(options: any){

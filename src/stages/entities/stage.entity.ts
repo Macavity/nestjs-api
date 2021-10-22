@@ -1,6 +1,7 @@
-import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, Entity, ManyToOne, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
 import { Zone } from '../../zones/entities/zone.entity';
 import { Boss } from '../../bosses/entities/boss.entity';
+import { PartySetup } from '../../bosses/entities/party-setup.entity';
 
 @Entity()
 export class Stage {
@@ -15,4 +16,7 @@ export class Stage {
 
   @ManyToOne(() => Boss, boss => boss.stages)
   public boss: Boss;
+
+  @OneToMany(() => PartySetup, partySetups => partySetups.boss)
+  public partySetups: PartySetup[];
 }

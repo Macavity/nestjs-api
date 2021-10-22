@@ -2,15 +2,17 @@ import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { BossesService } from './bosses/bosses.service';
 import { bossFixtures } from './fixtures/boss-fixtures';
-import { ZonesService } from './zones/zones.service';
 import { zoneFixtures } from './fixtures/zone-fixtures';
 import { AppService } from './app.service';
-import { StagesService } from './stages/stages.service';
 import { JobsService } from './jobs/jobs.service';
 import { jobFixtures } from './fixtures/job-fixtures';
 import { SkillsService } from './jobs/skills.service';
 import { SkillFixtures } from './fixtures/skill-fixtures';
 import { SkillFactory } from './jobs/entities/skill.factory';
+import { PartySetupService } from './bosses/party-setup.service';
+import { StagesService } from './stages/stages.service';
+import { PartySetupFactory } from './bosses/entities/party-setup.factory';
+import { ZonesService } from './zones/zones.service';
 
 async function bootstrap() {
   const application = await NestFactory.createApplicationContext(
@@ -22,9 +24,25 @@ async function bootstrap() {
   switch (command) {
     case 'fixtures:bosses':
       const bossesService: BossesService = application.get(BossesService);
+      const partySetupService: PartySetupService = application.get(PartySetupService);
+      const zonesService: ZonesService = application.get(ZonesService);
+
+      await partySetupService.truncate();
 
       for (const object of bossFixtures) {
-        await bossesService.updateOrCreateObject(object.name, object.primaryElement, object.secondaryElement);
+        const boss = await bossesService.updateOrCreateObject(object.name, object.primaryElement, object.secondaryElement);
+
+        for (const setup of object.partySetups) {
+          const zone = await zonesService.findOne({
+            where: {
+              name: setup.areaName,
+            }
+          })
+
+          const partySetup = await partySetupService.createObject(setup, boss, zone);
+        }
+
+        console.log(`[Console] Added/Updated Boss ${boss.name} with ${object.partySetups.length} Setups.`);
       }
 
       console.info('[Console]', `${bossFixtures.length} Bosses imported.`);
@@ -38,7 +56,7 @@ async function bootstrap() {
 
         const skillsForJob = SkillFixtures.findAllByClass(jobObject.id);
 
-        for(const skillArray of skillsForJob){
+        for (const skillArray of skillsForJob) {
           await skillsService.updateOrCreate(SkillFactory.createFromFixtureArray(skillArray));
         }
 
