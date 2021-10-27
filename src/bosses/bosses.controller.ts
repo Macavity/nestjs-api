@@ -6,6 +6,7 @@ import { Boss } from './entities/boss.entity';
 import { NotFoundError } from 'rxjs';
 import { PartySetup } from './entities/party-setup.entity';
 import { ZonesService } from '../zones/zones.service';
+import { logContext } from '../modules/common/log.helper';
 
 @Crud({
   model: {
@@ -36,7 +37,6 @@ export class BossesController implements CrudController<Boss> {
   ){
     level = Number(level);
 
-    this.logger.debug(`getPartySetupsByBoss ${bossId} - ${zoneId} @ ${level}`);
     const boss = await this.service.findOne({
       where: {
         id: bossId,
@@ -57,22 +57,21 @@ export class BossesController implements CrudController<Boss> {
       return filteredEntries;
     }
 
-    this.logger.debug('No filtered entries found.');
+    //this.logger.debug(`No filtered entries found. ${logContext(bossId,zoneId,level)}`);
 
     const zone = await this.zonesService.findOne(zoneId);
     const reversed = boss.partySetups.reverse();
 
     const targetScore = this.zonesService.calculateStageScore(zone, level);
-    this.logger.debug(`Target Score: ${zone.name} ${level} ${targetScore}`);
 
     for (const rotation of reversed) {
       if(!rotation.zone){
+        this.logger.debug(`Missing zone in Rotation. ${logContext(bossId,zoneId,level)}`);
         throw new Error('Missing zone in rotation '+rotation.id);
       }
       const rotationScore = this.zonesService.calculateStageScore(rotation.zone, rotation.level);
 
       if (rotationScore <= targetScore) {
-        this.logger.debug(`Found match: ${rotation.id}`);
         return [rotation];
       }
     }

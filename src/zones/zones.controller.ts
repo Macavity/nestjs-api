@@ -5,6 +5,7 @@ import { Zone } from './entities/zone.entity';
 import { ApiTags } from '@nestjs/swagger';
 import { StagesService } from './stages.service';
 import { Stage } from './entities/stage.entity';
+import { PartySetupService } from '../bosses/party-setup.service';
 
 @Crud({
   model: {
@@ -47,7 +48,9 @@ export class ZonesController implements CrudController<Zone> {
   async getStages(
     @Param('zoneId') zoneId: number,
   ){
-    return  await this.stageService.findSortedStages(zoneId);
+    await this.service.createMissingStages(zoneId);
+
+    return await this.stageService.findSortedStages(zoneId);
   }
 
 }

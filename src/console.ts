@@ -120,29 +120,7 @@ async function bootstrap() {
 
       break;
     case 'update:stages':
-      // const setups: PartySetup[] = await partySetupService.find();
-
-
-      const setups = await getConnection()
-        .createQueryBuilder()
-        .select('party_setup.id as id')
-        .addSelect('party_setup.zoneId as zoneId')
-        .addSelect('party_setup.level as level')
-        .addSelect('party_setup.bossId as bossId')
-        .from(PartySetup, 'party_setup')
-        .where(`NOT EXISTS (SELECT * FROM stage WHERE stage.\`level\` = party_setup.\`level\` AND stage.zoneId = party_setup.zoneId)`)
-        .getRawMany();
-
-      logger.log(`Found ${setups.length} missing stages.`);
-      // console.log(setups);
-
-      for(const setup of setups) {
-        const zone = await zonesService.findOne(setup.zoneId);
-        const stage = StageFactory.create(setup.level, zone, setup.bossId);
-
-        await stagesService.save(stage);
-        logger.log(`Stage ${stage.level} created.`)
-      }
+      await zonesService.createMissingStages(null);
 
       break;
     // case 'fixtures:stages':
