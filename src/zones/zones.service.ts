@@ -77,20 +77,15 @@ export class ZonesService extends TypeOrmCrudService<Zone> {
       .where('NOT EXISTS (SELECT * FROM stage WHERE stage.`level` = `party_setup`.`level` AND stage.`zoneId` = `party_setup`.zoneId) ');
 
     if(limitByZoneId){
-      console.log('limitByZoneId', limitByZoneId)
       query.andWhere('`party_setup`.`zoneId` = :zoneId', { zoneId: limitByZoneId });
-      console.log(query.getQuery());
     }
 
     const setupsWithMissingStage = await query.getRawMany();
 
     if(!setupsWithMissingStage.length){
-      this.logger.debug('No missing stages found.');
       this.logger.debug(setupsWithMissingStage);
       return;
     }
-
-    this.logger.log(`Found ${setupsWithMissingStage.length} missing stages.`);
 
     for(const setup of setupsWithMissingStage) {
       const zone = await this.findOne(setup.zoneId);
