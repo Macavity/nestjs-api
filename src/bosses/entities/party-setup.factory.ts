@@ -12,7 +12,7 @@ export class PartySetupFactory {
     partySetup.zone = zone;
     partySetup.level = json.level;
 
-    for(const jobName of ['gladiator']){
+    for(const jobName of ['gladiator', 'warrior', 'druid', 'shaman', 'assassin', 'hunter', 'warlock', 'mage']){
       if(json[jobName]){
         partySetup[jobName] = RotationEmbedFactory.createFromJson(json[jobName]);
       }
