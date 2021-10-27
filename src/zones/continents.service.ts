@@ -6,8 +6,12 @@ import { InjectRepository } from '@nestjs/typeorm';
 @Injectable()
 export class ContinentsService extends TypeOrmCrudService<Continent> {
   constructor(
-    @InjectRepository(Continent) private continentsRepository,
+    @InjectRepository(Continent) private repository,
   ) {
-    super(continentsRepository);
+    super(repository);
+  }
+
+  public async findOneOrFail(options: any){
+    return await this.repository.findOneOrFail(options);
   }
 }

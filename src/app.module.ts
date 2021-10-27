@@ -3,12 +3,10 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { BossesModule } from './bosses/bosses.module';
-import { ContinentsModule } from './continents/continents.module';
 import { ZonesModule } from './zones/zones.module';
 import * as path from 'path';
 import * as dotenv from 'dotenv';
 import * as fs from 'fs';
-import { StagesModule } from './stages/stages.module';
 import { databaseConfig } from './modules/database/database.provider';
 import { JobsModule } from './jobs/jobs.module';
 
@@ -28,9 +26,7 @@ if (fs.existsSync(envFilePath)) {
     TypeOrmModule.forRoot(databaseConfig()),
     // DatabaseModule,
     BossesModule,
-    ContinentsModule,
     ZonesModule,
-    StagesModule,
     JobsModule,
   ],
   controllers: [AppController],

@@ -1,5 +1,5 @@
 import { Column, Entity, ManyToOne, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
-import { Zone } from '../../zones/entities/zone.entity';
+import { Zone } from './zone.entity';
 import { Boss } from '../../bosses/entities/boss.entity';
 import { PartySetup } from '../../bosses/entities/party-setup.entity';
 
