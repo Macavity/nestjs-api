@@ -1,10 +1,11 @@
 import { Zone } from '../../zones/entities/zone.entity';
-import { Continent } from '../../continents/entities/continent.entity';
-import { Stage } from '../../stages/entities/stage.entity';
+import { Continent } from '../../zones/entities/continent.entity';
 import { Boss } from '../../bosses/entities/boss.entity';
 import { TypeOrmModuleOptions } from '@nestjs/typeorm';
 import { Job } from '../../jobs/entities/job.entity';
 import { Skill } from '../../jobs/entities/skill.entity';
+import { PartySetup } from '../../bosses/entities/party-setup.entity';
+import { Stage } from '../../zones/entities/stage.entity';
 
 export function databaseConfig(): TypeOrmModuleOptions {
   return {
@@ -14,7 +15,7 @@ export function databaseConfig(): TypeOrmModuleOptions {
     username: process.env.TYPEORM_USERNAME,
     password: process.env.TYPEORM_PASSWORD,
     database: process.env.TYPEORM_DATABASE,
-    entities: [Zone, Continent, Stage, Boss, Job, Skill],
+    entities: [Zone, Continent, Stage, Boss, Job, Skill, PartySetup],
     // entities: [__dirname ,'..' , '**', '*.entity.ts'],
     synchronize: true,
   };

@@ -1,7 +1,6 @@
-import { Stage } from './stage.entity';
-import { Zone } from '../../zones/entities/zone.entity';
 import { Boss } from '../../bosses/entities/boss.entity';
-
+import { Zone } from '../entities/zone.entity';
+import { Stage } from '../entities/stage.entity';
 
 export class StageFactory {
   static create(level: number, zone: Zone, boss: Boss): Stage {

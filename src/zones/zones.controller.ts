@@ -3,13 +3,14 @@ import { ZonesService } from './zones.service';
 import { Crud, CrudController } from '@nestjsx/crud';
 import { Zone } from './entities/zone.entity';
 import { ApiTags } from '@nestjs/swagger';
-import { zoneFixtures } from '../fixtures/zone-fixtures';
-import slugify from 'slugify';
-import { StagesService } from '../stages/stages.service';
+import { StagesService } from './stages.service';
+import { Stage } from './entities/stage.entity';
 
 @Crud({
   model: {
     type: Zone,
+  },
+  params: {
   },
   query: {
     join: {
@@ -20,7 +21,17 @@ import { StagesService } from '../stages/stages.service';
       stages: {
 
       },
-    }
+    },
+    sort: [
+      {
+        field: 'continent',
+        order: 'ASC',
+      },
+      {
+        field: 'position',
+        order: 'ASC',
+      }
+    ]
   }
 })
 @Controller('zones')
@@ -36,7 +47,7 @@ export class ZonesController implements CrudController<Zone> {
   async getStages(
     @Param('zoneId') zoneId: number,
   ){
-    return await this.stageService.findSortedStages(zoneId);
+    return  await this.stageService.findSortedStages(zoneId);
   }
 
 }

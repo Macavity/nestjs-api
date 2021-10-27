@@ -4,10 +4,10 @@ import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 
 export const initializeSwagger = (app: INestApplication) => {
   const config = new DocumentBuilder()
-    .setTitle('Ulala Tool API')
+    .setTitle('Idle Adventure API')
     .setDescription('Well..no description.')
     .setVersion('0.1')
-    .addTag('ulala')
+    .addTag('idle')
     .build();
 
   const document = SwaggerModule.createDocument(app, config);

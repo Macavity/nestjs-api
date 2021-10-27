@@ -1,6 +1,7 @@
 import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
-import { Stage } from '../../stages/entities/stage.entity';
 import { ElementType } from '../../enums/ElementType';
+import { PartySetup } from './party-setup.entity';
+import { Stage } from '../../zones/entities/stage.entity';
 
 @Entity()
 export class Boss {
@@ -18,4 +19,7 @@ export class Boss {
 
   @Column()
   public secondaryElement: ElementType;
+
+  @OneToMany(() => PartySetup, partySetups => partySetups.boss)
+  public partySetups: PartySetup[];
 }
